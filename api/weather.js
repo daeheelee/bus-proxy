@@ -1,5 +1,5 @@
 export default async function handler(req, res) {
-    const serviceKey = 'qhtl6dpNTIH%2FnfkU5JTrAP1X1lRL9RHmUTLJCaFb4Se92mQzuvUAfkkqKWOD4pNSskX0vv7jQVFd4P7MrxbvdA%3D%3D';
+    const serviceKey = 'qhtl6dpNTIH/nfkU5JTrAP1X1lRL9RHmUTLJCaFb4Se92mQzuvUAfkkqKWOD4pNSskX0vv7jQVFd4P7MrxbvdA==';
     const base_url = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst';
     
     // 현재 시간 계산 (기상청은 매시 40분 이후에 데이터가 갱신됨)
