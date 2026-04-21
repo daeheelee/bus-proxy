@@ -12,14 +12,25 @@ export default async function handler(req, res) {
 
     try {
         const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`API 응답 실패: ${response.status}`);
+        }
         const data = await response.json();
         
-        // 데이터 파싱 (T1H: 기온, PTY: 강수형태 등)
+        // 데이터 구조가 예상과 다를 때를 위한 방어 코드
+        if (!data.response || !data.response.body || !data.response.body.items) {
+            return res.status(500).json({ error: '데이터 구조 에러', raw: data });
+        }
+
         const items = data.response.body.items.item;
-        const temp = items.find(i => i.category === 'T1H').obsrValue;
+        const tempItem = items.find(i => i.category === 'T1H');
         
-        res.status(200).json({ temp: parseFloat(temp), feels: parseFloat(temp) }); // 일단 기온만 반환
+        if (!tempItem) {
+            return res.status(500).json({ error: 'T1H 데이터 없음' });
+        }
+
+        res.status(200).json({ temp: parseFloat(tempItem.obsrValue), feels: parseFloat(tempItem.obsrValue) });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch' });
+        res.status(500).json({ error: error.message });
     }
 }
